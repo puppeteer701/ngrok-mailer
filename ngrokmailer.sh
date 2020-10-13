@@ -1,3 +1,4 @@
+
 #!/bin/sh
 # Made By Developer From Jokela 2018
 #
@@ -10,8 +11,8 @@ forwarding_connectiontype="http" # Forwarding type http or tcp (See more in ngro
 email_addr="send_to_username@gmail.com" #Email address for sending Ngrok address in case server or device rebooted
 email_from="Dummy" #Email address for sending Ngrok address in case server or device rebooted
 
-./ngrok $forwarding_connectiontype $forwarding_port
-sleep 10
+./ngrok $forwarding_connectiontype $forwarding_port & echo "Started ngrok"
+sleep 5
 ngrok_url=$(curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p')
 
 rm -f msg.txt
@@ -22,5 +23,6 @@ Subject: Ngrok Mailer got url!
 
 Hello! Here is your server's URL from Ngrok
 $ngrok_url
+Cheers
 EOF
 msmtp $email_addr < msg.txt
