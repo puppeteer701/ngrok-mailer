@@ -5,7 +5,6 @@
 # Script Depends on: sSMTP, ngrok, unzip and wget
 # Run Script as root (using sudo if not loged in as root), if ssmtp command is not found, and if you enable for dependencies checkfordependencies
 
-forwarding_ip="" # IP of device, server or whatever, which NGROK will forward, leave blank for localhost
 forwarding_port="1234" # Port to forward
 forwarding_connectiontype="http" # Forwarding type http or tcp (See more in ngrok documentation)
 email_addr="send_to_username@gmail.com" #Email address for sending Ngrok address in case server or device rebooted
@@ -18,7 +17,7 @@ ngrok_url=$(curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -
 rm -f msg.txt
 cat > msg.txt <<EOF
 To: $email_addr
-From: $ssmtp_root
+From: $email_from
 Subject: Ngrok Mailer got url!
 
 Hello! Here is your server's URL from Ngrok
