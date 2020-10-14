@@ -11,8 +11,14 @@ forwarding_connectiontype="http" # Forwarding type http or tcp (See more in ngro
 email_addr="send_to_username@gmail.com" #Email address for sending Ngrok address in case server or device rebooted
 email_from="Dummy" #Email address for sending Ngrok address in case server or device rebooted
 
-./ngrok $forwarding_connectiontype $forwarding_port & echo "Started ngrok"
+# kill previous ngrok service
+(! pidof ngrok) || kill -9 $(pidof ngrok)
 sleep 5
+
+# start ngrok service
+/home/pi/mailer/ngrok $forwarding_connectiontype $forwarding_port -log=stdout > ngrok.log &
+sleep 5
+
 ngrok_url=$(curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p')
 
 rm -f msg.txt
