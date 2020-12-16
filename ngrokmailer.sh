@@ -16,7 +16,7 @@ email_from="Dummy" #Email address for sending Ngrok address in case server or de
 sleep 5
 
 # start ngrok service
-/home/pi/mailer/ngrok $forwarding_connectiontype $forwarding_port -log=stdout > ngrok.log &
+./ngrok $forwarding_connectiontype -bind-tls=true -log=stdout $forwarding_port > ngrok.log &
 sleep 5
 
 ngrok_url=$(curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p')
@@ -28,7 +28,7 @@ From: $email_from
 Subject: Ngrok Mailer got url!
 
 Hello! Here is your server's URL from Ngrok
-$ngrok_url
+https://$ngrok_url
 Cheers
 EOF
 msmtp $email_addr < msg.txt

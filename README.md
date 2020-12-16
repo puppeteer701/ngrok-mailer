@@ -8,6 +8,15 @@
 ```
 sudo apt install msmtp msmtp-mta ca-certificates
 ```
+
+### Enable less secure apps on gmail - Possibly not needed
+https://myaccount.google.com/lesssecureapps and check the toggle
+
+### Enable 2FA and create an App Password
+```
+Google Account/2Fa
+Google Account/Security/App Password
+```
 ### Setup msmtp config
 ```
 sudo vim /etc/msmtprc
@@ -32,11 +41,28 @@ port           587
 
 from           dummy
 user           username@gmail.com
-password       1234
+password       App Password
 
 # Default
 account default : gmail
 ```
 
-### Enable less secure apps on gmail
-https://myaccount.google.com/lesssecureapps and check the toggle
+## Local Videos
+```
+/var/lib/motioneye/Camera1/
+```
+
+## Ngrok mailer
+```
+/home/pi/mailer
+```
+
+## Crontab
+```
+crontab -e
+```
+
+```
+@reboot sleep 30 && /home/pi/mailer/ngrokmailer.sh
+@weekly /home/pi/mailer/ngrokmailer.sh
+```
